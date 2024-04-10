@@ -11,17 +11,17 @@
             continue
         end
         a_k = perck * D_d
-        set_param!(GreenDICE,:damages,:a_d,D_d)
+        update_param!(GreenDICE,:damages,:a_d,D_d)
         update_param!(GreenDICE,:a2,a_k)
         run(GreenDICE)
         Resd = bboptimize(damage_params;SearchRange=(0.,1.), NumDimensions=1, Method=:adaptive_de_rand_1_bin_radiuslimited,MaxSteps=3000)
         a_4 = best_candidate(Resd) 
-        set_param!(GreenDICE,:damages,:a4,a_4[1])
+        update_param!(GreenDICE,:damages,:a4,a_4[1])
         update_param!(GreenDICE,:neteconomy,:a4,a_4[1]) 
         res = bboptimize(eval_dice;SearchRange=(0.,1.), NumDimensions=120, Method=:adaptive_de_rand_1_bin_radiuslimited,MaxSteps=49999)
         best_candidate(res) # optimal vector of miu emissions trajectories
         update_param!(GreenDICE,:MIU,best_candidate(res)[1:60])
-        update_param!(GreenDICE,:S,best_candidate(res)[61:120])
+        update_param!(GreenDICE,:neteconomy,:S,best_candidate(res)[61:120])
         run(GreenDICE)
         results = foo()
         global Results_uncertainty_damage = innerjoin(Results_uncertainty_damage,results,on= :time, makeunique = true)
