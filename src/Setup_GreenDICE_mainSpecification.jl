@@ -1,6 +1,6 @@
 ## GreenDICE main specification (START)
         #set parameters of specification (start)
-        update_param!(GreenDICE,:elasmu,elasmu_param)
+        update_param!(GreenDICE,:welfare,:elasmu,elasmu_param)
         set_param!(GreenDICE,:share,share1_param)
         update_param!(GreenDICE,:welfare,:share2,share2_param)
         set_param!(GreenDICE,:share,share1_param)

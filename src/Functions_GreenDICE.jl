@@ -74,7 +74,7 @@ function eval_dice(x)
     m = x[1:60]
     s = x[61:end]
     update_param!(GreenDICE,:MIU,m)
-    update_param!(GreenDICE,:S,s)
+    update_param!(GreenDICE,:neteconomy,:S,s)
     run(GreenDICE)
     return -GreenDICE[:welfare, :UTILITY]
 end
@@ -85,7 +85,7 @@ function eval_dice_inv(x)
     s = x[61:120]
     inv = x[121:180]
     update_param!(GreenDICE,:MIU,m)
-    update_param!(GreenDICE,:S,s)
+    update_param!(GreenDICE,:neteconomy,:S,s)
     update_param!(GreenDICE,:invNCfrac,inv)
     run(GreenDICE)
     
