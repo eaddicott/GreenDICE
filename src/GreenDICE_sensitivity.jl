@@ -27,15 +27,15 @@
         global Results_uncertainty_damage = innerjoin(Results_uncertainty_damage,results,on= :time, makeunique = true)
         global mc = mc + 1
     end
-    CSV.write(string(dir,"Results/sensitivity/GreenDICE_UVnonUV_sens_opt_damage.csv"),Results_uncertainty_damage)
-    include(string(dir,"src/Setup_GreenDICE_mainSpecification.jl"))
+    CSV.write(string(dir,"\\Results\\sensitivity\\GreenDICE_UVnonUV_sens_opt_damage.csv"),Results_uncertainty_damage)
+    include(string(dir,"\\src\\Setup_GreenDICE_mainSpecification.jl"))
     run(GreenDICE)
     
     global Results_uncertainty_prtp = getdataframe(GreenDICE,Symbol(d_v[1,1]),Symbol(d_v[1,2]))
     for prtpi in (1:size(prtp_i)[1])
         prtp = prtp_i[prtpi]
         RR = [1/(1+prtp)^(t*5) for t in 0:59]
-        set_param!(GreenDICE,:welfare,:rr,RR)   # Ratio of NC to K0 
+        update_param!(GreenDICE,:welfare,:rr,RR)   # Ratio of NC to K0 
         res = bboptimize(eval_dice;SearchRange=(0.,1.), NumDimensions=120, Method=:adaptive_de_rand_1_bin_radiuslimited,MaxSteps=49999)
         best_candidate(res) # optimal vector of miu emissions trajectories
         set_param!(GreenDICE,:emissions,:MIU,best_candidate(res)[1:60])
@@ -45,9 +45,9 @@
         global Results_uncertainty_prtp = innerjoin(Results_uncertainty_prtp,results,on= :time, makeunique = true)
         global mc = mc + 1
     end
-    CSV.write(string(dir,"Results/sensitivity/GreenDICE_UVnonUV_sens_opt_prtp.csv"),Results_uncertainty_prtp)
+    CSV.write(string(dir,"\\Results\\sensitivity\\GreenDICE_UVnonUV_sens_opt_prtp.csv"),Results_uncertainty_prtp)
     RR = [1/(1+0.015)^(t*5) for t in 0:59]
-    set_param!(GreenDICE,:welfare,:rr,RR)   # Ratio of NC to K0 
+    update_param!(GreenDICE,:welfare,:rr,RR)   # Ratio of NC to K0 
     run(GreenDICE)
 
     global Results_uncertainty_cs = getdataframe(GreenDICE,Symbol(d_v[1,1]),Symbol(d_v[1,2]))
@@ -130,8 +130,8 @@
         global Results_uncertainty_share2 = innerjoin(Results_uncertainty_share2,results,on= :time, makeunique = true)
         global mc = mc + 1
     end
-    CSV.write(string(dir,"Results/sensitivity/GreenDICE_UVnonUV_sens_opt_share2.csv"),Results_uncertainty_share2)
-    include(string(dir,"src/Setup_GreenDICE_mainSpecification.jl"))
+    CSV.write(string(dir,"\\Results\\sensitivity\\GreenDICE_UVnonUV_sens_opt_share2.csv"),Results_uncertainty_share2)
+    include(string(dir,"\\src\\Setup_GreenDICE_mainSpecification.jl"))
     run(GreenDICE)
     
 
@@ -199,8 +199,8 @@
         results = foo()
         global Results_uncertainty_theta2 = innerjoin(Results_uncertainty_theta2,results,on= :time, makeunique = true)
     end
-    CSV.write(string(dir,"Results/sensitivity/GreenDICE_UVnonUV_sens_opt_theta2.csv"),Results_uncertainty_theta2)
-    include(string(dir,"src/Setup_GreenDICE_mainSpecification.jl"))
+    CSV.write(string(dir,"\\Results\\sensitivity\\GreenDICE_UVnonUV_sens_opt_theta2.csv"),Results_uncertainty_theta2)
+    include(string(dir,"\\src\\Setup_GreenDICE_mainSpecification.jl"))
     run(GreenDICE)
     
     global Results_uncertainty_theta = getdataframe(GreenDICE,Symbol(d_v[1,1]),Symbol(d_v[1,2]))
@@ -232,7 +232,7 @@
         results = foo()
         global Results_uncertainty_elasmu = innerjoin(Results_uncertainty_elasmu,results,on= :time, makeunique = true)
     end
-    CSV.write(string(dir,"Results/sensitivity/GreenDICE_UVnonUV_sens_opt_elasmu.csv"),Results_uncertainty_elasmu)
-    include(string(dir,"src/Setup_GreenDICE_mainSpecification.jl"))
+    CSV.write(string(dir,"\\Results\\sensitivity\\GreenDICE_UVnonUV_sens_opt_elasmu.csv"),Results_uncertainty_elasmu)
+    include(string(dir,"\\src\\Setup_GreenDICE_mainSpecification.jl"))
     run(GreenDICE)
     
