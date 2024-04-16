@@ -35,7 +35,7 @@
     for prtpi in (1:size(prtp_i)[1])
         prtp = prtp_i[prtpi]
         RR = [1/(1+prtp)^(t*5) for t in 0:59]
-        update_param!(GreenDICE,:welfare,:rr,RR)   # Ratio of NC to K0 
+        update_param!(GreenDICE,:rr,RR)   # Ratio of NC to K0 
         res = bboptimize(eval_dice;SearchRange=(0.,1.), NumDimensions=120, Method=:adaptive_de_rand_1_bin_radiuslimited,MaxSteps=49999)
         best_candidate(res) # optimal vector of miu emissions trajectories
         set_param!(GreenDICE,:emissions,:MIU,best_candidate(res)[1:60])
@@ -47,7 +47,7 @@
     end
     CSV.write(string(dir,"\\Results\\sensitivity\\GreenDICE_UVnonUV_sens_opt_prtp.csv"),Results_uncertainty_prtp)
     RR = [1/(1+0.015)^(t*5) for t in 0:59]
-    update_param!(GreenDICE,:welfare,:rr,RR)   # Ratio of NC to K0 
+    update_param!(GreenDICE,:rr,RR)   # Ratio of NC to K0 
     run(GreenDICE)
 
     global Results_uncertainty_cs = getdataframe(GreenDICE,Symbol(d_v[1,1]),Symbol(d_v[1,2]))
